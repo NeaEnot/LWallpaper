@@ -16,3 +16,18 @@ class MoveSymbol:
         canvas.turtle.pencolor(self.color)
         canvas.turtle.pensize(t)
         canvas.turtle.forward(l)
+
+class TurnSymbol:
+    def __init__(self, direction, amin, amax, akoef):
+        self.direction = direction
+        self.amin = amin
+        self.amax = amax
+        self.akoef = akoef
+
+    def execute(self, canvas):
+        angle = random(self.amin, self.amax) * self.akoef ** len(canvas.stack)
+
+        if self.direction == '+':
+            canvas.turtle.right(angle)
+        elif self.direction == '-':
+            canvas.turtle.left(angle)
