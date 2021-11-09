@@ -31,3 +31,17 @@ class TurnSymbol:
             canvas.turtle.right(angle)
         elif self.direction == '-':
             canvas.turtle.left(angle)
+
+class LeafSymbol:
+    def __init__(self, size_min, size_max, color):
+        self.size_min = size_min
+        self.size_max = size_max
+        self.color = color
+
+    def execute(self, canvas):
+        thick = random(self.size_min, self.size_max)
+        l = random(self.size_min, self.size_max)
+
+        canvas.turtle.pencolor(self.color)
+        canvas.turtle.pensize(thick)
+        canvas.turtle.forward(l)
