@@ -1,4 +1,6 @@
+import turtle
 from random import random
+
 
 class MoveSymbol:
     def __init__(self, lmin, lmax, lkoef, thick, thick_koef, color):
@@ -17,6 +19,7 @@ class MoveSymbol:
         canvas.turtle.pensize(t)
         canvas.turtle.forward(l)
 
+
 class TurnSymbol:
     def __init__(self, direction, amin, amax, akoef):
         self.direction = direction
@@ -32,6 +35,7 @@ class TurnSymbol:
         elif self.direction == '-':
             canvas.turtle.left(angle)
 
+
 class LeafSymbol:
     def __init__(self, size_min, size_max, color):
         self.size_min = size_min
@@ -45,3 +49,33 @@ class LeafSymbol:
         canvas.turtle.pencolor(self.color)
         canvas.turtle.pensize(thick)
         canvas.turtle.forward(l)
+
+
+class StubSymbol:
+    def __init__(self):
+        None
+
+    def execute(self, canvas):
+        None
+
+
+class PushSymbol:
+    def __init__(self):
+        None
+
+    def execute(self, canvas):
+        canvas.stack.append(turtle.xcor())
+        canvas.stack.append(turtle.ycor())
+        canvas.stack.append(turtle.heading())
+
+
+class PopSymbol:
+    def __init__(self):
+        None
+
+    def execute(self, canvas):
+        canvas.turtle.penup()
+        canvas.turtle.setheading(canvas.stack.pop())
+        canvas.turtle.sety(canvas.stack.pop())
+        canvas.turtle.setx(canvas.stack.pop())
+        canvas.turtle.pendown()
