@@ -1,5 +1,5 @@
 import turtle
-from random import random
+import random
 
 
 class MoveSymbol:
@@ -12,8 +12,10 @@ class MoveSymbol:
         self.color = color
 
     def execute(self, canvas):
-        l = random(self.lmin, self.lmax) * self.lkoef ** len(canvas.stack)
+        l = random.randint(self.lmin, self.lmax) * self.lkoef ** len(canvas.stack)
         t = self.thick * self.thick_koef ** len(canvas.stack)
+        if t == 0:
+            t = 1
 
         canvas.turtle.pencolor(self.color)
         canvas.turtle.pensize(t)
@@ -28,7 +30,7 @@ class TurnSymbol:
         self.akoef = akoef
 
     def execute(self, canvas):
-        angle = random(self.amin, self.amax) * self.akoef ** len(canvas.stack)
+        angle = random.uniform(self.amin, self.amax) * self.akoef ** len(canvas.stack)
 
         if self.direction == '+':
             canvas.turtle.right(angle)
@@ -43,8 +45,13 @@ class LeafSymbol:
         self.color = color
 
     def execute(self, canvas):
-        thick = random(self.size_min, self.size_max)
-        l = random(self.size_min, self.size_max)
+        thick = random.randint(self.size_min, self.size_max)
+        l = random.randint(self.size_min, self.size_max)
+
+        if thick == 0:
+            thick = 1
+        if l == 0:
+            l = 1
 
         canvas.turtle.pencolor(self.color)
         canvas.turtle.pensize(thick)
@@ -53,15 +60,15 @@ class LeafSymbol:
 
 class StubSymbol:
     def __init__(self):
-        None
+        pass
 
     def execute(self, canvas):
-        None
+        pass
 
 
 class PushSymbol:
     def __init__(self):
-        None
+        pass
 
     def execute(self, canvas):
         canvas.stack.append(turtle.xcor())
@@ -71,7 +78,7 @@ class PushSymbol:
 
 class PopSymbol:
     def __init__(self):
-        None
+        pass
 
     def execute(self, canvas):
         canvas.turtle.penup()
@@ -79,3 +86,61 @@ class PopSymbol:
         canvas.turtle.sety(canvas.stack.pop())
         canvas.turtle.setx(canvas.stack.pop())
         canvas.turtle.pendown()
+
+
+def generate_color():
+    abc = '0123456789abcdef'
+
+    color = '#'
+
+    for i in range(6):
+        ch = abc[random.randint(0, len(abc))]
+        color += ch
+    
+    return color
+
+class Alphabet:
+    def __init__(self, nsymbols=0):
+        abc = 'abcdefghijklmnopqrstuvwxyz'
+
+        self.dict = {'[': PushSymbol(), ']': PopSymbol()}
+        if nsymbols == 0:
+            nsymbols = random(2, 10)
+        
+        for i in range(nsymbols):
+            ch = abc[random.randint(0, len(abc))]
+            abc = abc.replace(ch, '')
+            
+            k = random.randint(0, 4)
+            
+            if k == 0:
+                lmin = random.randint(10, 20)
+                lmax = random.randint(lmin, lmin * 1.5)
+                lk = random.uniform(0.5, 1.5)
+                t = random.randint(4, 10)
+                tk = random.uniform(0.5, 0.9)
+                color = generate_color()
+                
+                self.dict.update({ch: MoveSymbol(lmin, lmax, lk, t, tk, color) })
+            
+            if k == 1:
+                dir = '+'
+                amin = random.uniform(1, 90)
+                amax = random.uniform(amin, 180)
+                ak = random.uniform(0, 1.5)
+                
+                d = random.randint(0, 2)
+                if d == 1:
+                    dir = '-'
+                
+                self.dict.update({ch: TurnSymbol(dir, amin, amax, ak) })
+            
+            if k == 2:
+                smin = random.randint(4, 10)
+                smax = random.randint(smin, smin * 3)
+                color = generate_color()
+                
+                self.dict.update({ch: LeafSymbol(smin, smax, color) })
+            
+            if k == 3:
+                self.dict.update({ch: StubSymbol() })
