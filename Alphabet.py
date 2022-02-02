@@ -96,8 +96,9 @@ def generate_color():
     for i in range(6):
         ch = abc[random.randint(0, len(abc))]
         color += ch
-    
+
     return color
+
 
 class Alphabet:
     def __init__(self, nsymbols=0):
@@ -106,13 +107,13 @@ class Alphabet:
         self.dict = {'[': PushSymbol(), ']': PopSymbol()}
         if nsymbols == 0:
             nsymbols = random(2, 10)
-        
+
         for i in range(nsymbols):
             ch = abc[random.randint(0, len(abc))]
             abc = abc.replace(ch, '')
-            
+
             k = random.randint(0, 4)
-            
+
             if k == 0:
                 lmin = random.randint(10, 20)
                 lmax = random.randint(lmin, lmin * 1.5)
@@ -120,27 +121,27 @@ class Alphabet:
                 t = random.randint(4, 10)
                 tk = random.uniform(0.5, 0.9)
                 color = generate_color()
-                
-                self.dict.update({ch: MoveSymbol(lmin, lmax, lk, t, tk, color) })
-            
+
+                self.dict.update({ch: MoveSymbol(lmin, lmax, lk, t, tk, color)})
+
             if k == 1:
-                dir = '+'
+                direct = '+'
                 amin = random.uniform(1, 90)
                 amax = random.uniform(amin, 180)
                 ak = random.uniform(0, 1.5)
-                
+
                 d = random.randint(0, 2)
                 if d == 1:
-                    dir = '-'
-                
-                self.dict.update({ch: TurnSymbol(dir, amin, amax, ak) })
-            
+                    direct = '-'
+
+                self.dict.update({ch: TurnSymbol(direct, amin, amax, ak)})
+
             if k == 2:
                 smin = random.randint(4, 10)
                 smax = random.randint(smin, smin * 3)
                 color = generate_color()
-                
-                self.dict.update({ch: LeafSymbol(smin, smax, color) })
-            
+
+                self.dict.update({ch: LeafSymbol(smin, smax, color)})
+
             if k == 3:
-                self.dict.update({ch: StubSymbol() })
+                self.dict.update({ch: StubSymbol()})
