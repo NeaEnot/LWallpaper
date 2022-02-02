@@ -16,8 +16,8 @@ def generate(alphabet, l):
 def check(s):
     stk = 0
 
-    for i in range(len(str)):
-        ch = str[i]
+    for i in range(len(s)):
+        ch = s[i]
         if ch == '[':
             stk += 1
         if ch == ']':
