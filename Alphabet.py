@@ -106,7 +106,7 @@ class Alphabet:
 
         self.dict = {'[': PushSymbol(), ']': PopSymbol()}
         if nsymbols == 0:
-            nsymbols = random(2, 10)
+            nsymbols = random.randint(2, 10)
 
         for i in range(nsymbols):
             ch = abc[random.randint(0, len(abc))]
@@ -116,7 +116,7 @@ class Alphabet:
 
             if k == 0:
                 lmin = random.randint(10, 20)
-                lmax = random.randint(lmin, lmin * 1.5)
+                lmax = random.randint(lmin, int(lmin * 1.5))
                 lk = random.uniform(0.5, 1.5)
                 t = random.randint(4, 10)
                 tk = random.uniform(0.5, 0.9)
