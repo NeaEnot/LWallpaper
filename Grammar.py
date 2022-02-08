@@ -1,12 +1,11 @@
 import random
-import Alphabet
 
 
 def generate(abc, l):
     answer = ''
 
     for i in range(l):
-        ch = abc[random.randint(0, len(abc))]
+        ch = abc[random.randint(0, len(abc) - 1)]
         answer += ch
 
     return answer
@@ -14,6 +13,9 @@ def generate(abc, l):
 
 def check(s):
     stk = 0
+
+    if '[]' in s:
+        return False
 
     for i in range(len(s)):
         ch = s[i]
@@ -35,7 +37,7 @@ class Rule:
     def __init__(self, abc, minl, maxl):
         s = ']'
         while not check(s):
-            s = generate(abc, random.randint(minl, maxl))
+            s = generate(abc + '[][]', random.randint(minl, maxl))
         self.result = s
 
 
@@ -50,11 +52,12 @@ class Grammar:
             self.abc += ch
 
         for i in range(nr):
-            key = keys[random.randint(0, len(keys))]
+            key = keys[random.randint(0, len(keys) - 1)]
 
             if key != '[' and key != ']':
                 keys.remove(key)
                 self.__dict__.update({key: Rule(self.abc, rlmin, rlmax)})
+                print(f'Rule: {key} -> {self.__dict__[key].result}')
             else:
                 i -= 1
 
@@ -64,8 +67,12 @@ class Grammar:
         while not check(answer):
             answer = ''
             for i in range(l):
-                ch = self.abc[random.randint(0, len(self.abc))]
+                ch = self.abc[random.randint(0, len(self.abc) - 1)]
                 answer += ch
+
+            answer = answer.replace('[]', '')
+            if len(answer) < l:
+                continue
 
         return answer
 
@@ -83,3 +90,5 @@ class Grammar:
                     result += ch
 
             answer = result
+
+        return answer

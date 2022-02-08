@@ -46,16 +46,16 @@ class LeafSymbol:
 
     def execute(self, canvas):
         thick = random.randint(self.size_min, self.size_max)
-        l = random.randint(self.size_min, self.size_max)
+        #l = random.randint(self.size_min, self.size_max)
 
-        if thick == 0:
-            thick = 1
-        if l == 0:
-            l = 1
+        #if thick == 0:
+        #    thick = 1
+        #if l == 0:
+        #    l = 1
 
         canvas.turtle.pencolor(self.color)
         canvas.turtle.pensize(thick)
-        canvas.turtle.forward(l)
+        canvas.turtle.forward(thick)
 
 
 class StubSymbol:
@@ -94,7 +94,7 @@ def generate_color():
     color = '#'
 
     for i in range(6):
-        ch = abc[random.randint(0, len(abc))]
+        ch = abc[random.randint(0, len(abc) - 1)]
         color += ch
 
     return color
@@ -109,20 +109,21 @@ class Alphabet:
             nsymbols = random.randint(2, 10)
 
         for i in range(nsymbols):
-            ch = abc[random.randint(0, len(abc))]
+            ch = abc[random.randint(0, len(abc) - 1)]
             abc = abc.replace(ch, '')
 
             k = random.randint(0, 4)
 
             if k == 0:
-                lmin = random.randint(10, 20)
+                lmin = random.randint(15, 30)
                 lmax = random.randint(lmin, int(lmin * 1.5))
-                lk = random.uniform(0.5, 1.5)
-                t = random.randint(4, 10)
+                lk = random.uniform(0.7, 1)
+                t = random.randint(4, 8)
                 tk = random.uniform(0.5, 0.9)
                 color = generate_color()
 
                 self.dict.update({ch: MoveSymbol(lmin, lmax, lk, t, tk, color)})
+                print(f'Symbol {ch}: move')
 
             if k == 1:
                 direct = '+'
@@ -135,13 +136,16 @@ class Alphabet:
                     direct = '-'
 
                 self.dict.update({ch: TurnSymbol(direct, amin, amax, ak)})
+                print(f'Symbol {ch}: turn')
 
             if k == 2:
-                smin = random.randint(4, 10)
-                smax = random.randint(smin, smin * 3)
+                smin = random.randint(4, 8)
+                smax = random.randint(smin, int(smin * 1.5))
                 color = generate_color()
 
                 self.dict.update({ch: LeafSymbol(smin, smax, color)})
+                print(f'Symbol {ch}: leaf')
 
             if k == 3:
                 self.dict.update({ch: StubSymbol()})
+                print(f'Symbol {ch}: stub')
