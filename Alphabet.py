@@ -46,12 +46,6 @@ class LeafSymbol:
 
     def execute(self, canvas):
         thick = random.randint(self.size_min, self.size_max)
-        #l = random.randint(self.size_min, self.size_max)
-
-        #if thick == 0:
-        #    thick = 1
-        #if l == 0:
-        #    l = 1
 
         canvas.turtle.pencolor(self.color)
         canvas.turtle.pensize(thick)
@@ -112,7 +106,7 @@ class Alphabet:
             ch = abc[random.randint(0, len(abc) - 1)]
             abc = abc.replace(ch, '')
 
-            k = random.randint(0, 4)
+            k = random.randint(0, 2)
 
             if k == 0:
                 lmin = random.randint(15, 30)

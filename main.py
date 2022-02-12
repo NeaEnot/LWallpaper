@@ -1,26 +1,35 @@
 from Canvas import Canvas
 from Grammar import Grammar
-from Alphabet import Alphabet
+from Alphabet import *
 from datetime import datetime
 from PIL import Image
 from PIL import EpsImagePlugin
+import random
 
 
 def draw():
     while True:
-        alphabet = Alphabet(7)
-        grammar = Grammar(alphabet, 8, 5, 10)
+        na = random.randint(4, 11)
+        nr = random.randint(3, na)
 
-        axiom = grammar.generate_axiom(8)
+        alphabet = Alphabet(na)
+        grammar = Grammar(alphabet, nr, 5, 12)
+
+        axiom = grammar.generate_axiom(random.randint(5, 12))
         print(axiom)
-        s = grammar.apply(axiom, 7)
+        s = grammar.apply(axiom, random.randint(6, 8))
         print(s)
 
         canvas = Canvas()
 
+        if len(s > 3000000):
+            continue
+
+        i = 0
         for ch in s:
-            symbol = alphabet.dict[ch]
-            symbol.execute(canvas)
+            i += 1
+            alphabet.dict[ch].execute(canvas)
+            print(f'{i}\t/\t{len(s)}')
 
         canvas.turtle.update()
 
